@@ -3,13 +3,17 @@
         "esModuleInterop": true,
         "target": "es6",
         "module": "CommonJS",
-        "strict": true
+        "strict": true,
+        "outDir": "./dist",
+        "sourceMap": true
     },
     "include": [
       "src/**/*.ts",
       "src",
       "commitlint.config.js",
+      "jest.config.ts",
       ".eslintrc.js"
     ],
+    "exclude": ["node_modules", "**/__tests__/*"]
   }
   

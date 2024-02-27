@@ -3,15 +3,12 @@ import {
   STRING
 } from 'sequelize'
 import sequelizeConnection from '../../../repositories/repositories_sequelize'
-import { enCode } from '../../../../utils/enCrypt'
 
 const UserModel = sequelizeConnection.define('User', {
   id: {
     type: INTEGER,
     primaryKey: true,
-    autoIncrement: true,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    get (this: any) { return enCode(this.getDataValue('uId' as string)) }
+    autoIncrement: true
   },
   username: {
     type: STRING,
