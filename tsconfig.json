@@ -2,7 +2,7 @@
     "compilerOptions": {
         "esModuleInterop": true,
         "target": "es6",
-        "module": "commonjs",
+        "module": "CommonJS",
         "strict": true
     },
     "include": [
@@ -10,6 +10,6 @@
       "src",
       "commitlint.config.js",
       ".eslintrc.js"
-    ]
+    ],
   }
   

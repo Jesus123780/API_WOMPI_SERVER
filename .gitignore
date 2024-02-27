@@ -11,3 +11,6 @@
 .env.production.local
 
 
+# build
+
+/build

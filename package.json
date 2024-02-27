@@ -5,6 +5,9 @@
   },
   "description": "",
   "devDependencies": {
+    "@babel/cli": "^7.23.9",
+    "@babel/core": "^7.23.9",
+    "@babel/preset-env": "^7.23.9",
     "@commitlint/config-conventional": "^19.0.0",
     "@types/body-parser": "^1.19.5",
     "@types/express": "^4.17.21",
@@ -22,17 +25,28 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
-  "keywords": [],
   "license": "ISC",
+  "keywords": [
+    "backend",
+    "wompi",
+    "system",
+    "jesus",
+    "juvinao"
+  ],
   "main": "index.js",
   "name": "transactions_api_wompi",
   "scripts": {
+    "babel-node": "babel-node --presets=@babel/preset-env",
+    "build": "babel src --out-dir build", 
     "dev": "nodemon --exec ts-node src/server.ts",
-    "start": "nodemon --exec ts-node src/server.ts",
+    "clear:install": "rm -rf node_modules && npm install",
+    "start": "nodemon --exec ts-node build/server.ts",
     "prepare": "husky install || true",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "check:eslint": "eslint '*/**/*.{js,jsx,tsx}' --fix --max-warnings=0 --no-error-on-unmatched-pattern",
-    "check:te": "npm run check:types && npm run check:eslint",
-    "test": "echo"
+    "check:types": "tsc --noemit",
+    "check:te": "npm run check:types && npm run check:eslint"
   },
   "version": "1.0.2"
 }
