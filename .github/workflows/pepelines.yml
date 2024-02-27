@@ -1,0 +1,51 @@
+# Workflow name
+name: Pepelines
+
+# Event for the workflow
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# List of jobs
+jobs:
+  
+  validate-commit:
+    name: Validate Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.8.1
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate commit messages
+        run: |
+          last_commit_message=$(git log -1 --pretty=format:%s)
+          if [[ ! "$last_commit_message" =~ ^(fix:|feat:) ]]; then
+            echo "Error: El mensaje de confirmación no cumple con el formato esperado (fix: o feat:)"
+            exit 1
+          fi
+        working-directory: ${{ github.workspace }}
+  
+  build:
+    needs: validate-commit
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build
+        run: npm run build
+        working-directory: ${{ github.workspace }}
