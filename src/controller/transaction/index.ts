@@ -7,7 +7,7 @@ import {
   LogSuccess,
   LogWarning
 } from '../../utils/magic'
-import { getAll } from '../../domain/user'
+import { createTransaction } from '../../domain/transaction'
 
 console.log('[[ transaction ]]')
 LogInfo('[GET] = /transaction/')
@@ -18,7 +18,7 @@ LogDanger('[DELETE] = /transaction/:id')
 
 const router = express.Router()
 
-router.get('/transaction/', getAll)
+router.get('/transaction/', createTransaction)
 // router.get('/transaction/:id', GetById)
 // router.post('/transaction/', Store)
 // router.delete('/transaction/:id', DeleteById)

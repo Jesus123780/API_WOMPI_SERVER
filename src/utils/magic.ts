@@ -6,7 +6,7 @@ export async function ResponseService (
   message: any,
   data: any
 ): Promise<any> {
-  return { status, Resp: { errorCode, message, data } }
+  return { status, response: { errorCode, message, data } }
 }
 
 export function LogSuccess (msg: any): void {

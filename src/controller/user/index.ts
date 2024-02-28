@@ -19,9 +19,5 @@ LogDanger('[DELETE] = /users/:id')
 const router = express.Router()
 
 router.get('/users/', getAll)
-// router.get('/users/:id', GetById)
-// router.post('/users/', Store)
-// router.delete('/users/:id', DeleteById)
-// router.patch('/users/:id', UpdateById)
 
 export default router
