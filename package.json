@@ -1,12 +1,17 @@
 {
   "author": "",
   "dependencies": {
+    "@types/swagger-jsdoc": "^6.0.4",
     "body-parser": "1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "helmet": "7.1.0",
+    "morgan": "^1.10.0",
     "mysql2": "3.9.2",
     "sequelize": "^6.37.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "tsoa": "^6.0.1",
     "uuidv4": "6.2.13"
   },
   "description": "",
@@ -19,10 +24,13 @@
     "@types/cors": "2.8.17",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
+    "@types/morgan": "^1.9.9",
     "@types/sequelize": "4.28.20",
     "@types/supertest": "^6.0.2",
+    "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "commitlint": "^19.0.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-standard-with-typescript": "^43.0.1",
@@ -60,10 +68,13 @@
     "lint:fix": "eslint --fix .",
     "check:eslint": "eslint '*/**/*.{js,jsx,tsx}' --fix --max-warnings=0 --no-error-on-unmatched-pattern",
     "check:types": "tsc --noemit",
-    "check:te": "npm run check:types && npm run check:eslint"
+    "check:te": "npm run check:types && npm run check:eslint",
+    "dev:swagger": "npm run swagger",
+    "build:swagger": "npm run swagger",
+    "swagger": "tsoa spec"
   },
   "jest": {
     "testEnvironment": "node"
   },
-  "version": "1.0.2"
+  "version": "1.0.3"
 }

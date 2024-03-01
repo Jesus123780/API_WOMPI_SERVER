@@ -31,5 +31,6 @@ const sequelizeConnection = new Sequelize(dbName, dbUser, dbPassword, {
   dialect: dbDriver,
   dialectOptions: (dbDriver !== null) && (Boolean(dialectOptions[dbDriver])) ? dialectOptions[dbDriver] : {}
 })
+// sequelizeConnection.sync()
 
 export default sequelizeConnection

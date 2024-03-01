@@ -7,7 +7,7 @@ import {
   LogSuccess,
   LogWarning
 } from '../../utils/magic'
-import { getAll } from '../../domain/user'
+import { createUserRider, getAllUserRider } from '../../domain/userRider'
 
 console.log('[[ USERS ]]')
 LogInfo('[GET] = /users/')
@@ -18,6 +18,8 @@ LogDanger('[DELETE] = /users/:id')
 
 const router = express.Router()
 
-router.get('/users/', getAll)
+router.get('/users/', getAllUserRider)
+router.get('/user/:id', getAllUserRider)
+router.post('/user/', createUserRider)
 
 export default router

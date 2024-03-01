@@ -4,8 +4,8 @@ import {
 } from 'sequelize'
 import sequelizeConnection from '../../../repositories/repositories_sequelize'
 
-const UserModel = sequelizeConnection.define('User', {
-  id: {
+const UserRiderModel = sequelizeConnection.define('userRider', {
+  idUserRider: {
     type: INTEGER,
     primaryKey: true,
     autoIncrement: true
@@ -29,4 +29,4 @@ const UserModel = sequelizeConnection.define('User', {
   }
 })
 
-export default UserModel
+export default UserRiderModel
