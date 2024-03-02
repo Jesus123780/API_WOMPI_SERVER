@@ -4,6 +4,7 @@ export const ID_NOT_FOUND = 'BL2022'
 export const FAIL_CONVERTED_UUID_TO_STRING = 'BL2023'
 export const NO_CONTENT = 'BL2024'
 export const CRASH_LOGIC = 'BL2025'
+export const SUCCESS = 'success'
 
 // COLORES PARA MOSTRAR DETALLES EN LOS LOGS
 export const BLACK_LOG = '\x1b[30m%s\x1b[0m'
