@@ -63,7 +63,7 @@
     "build": "tsc && babel src --out-dir build",
     "dev": "nodemon --exec ts-node src/index.ts",
     "clear:install": "rm -rf node_modules && npm install",
-    "start": "build/index.ts",
+    "start": "node build/src/index.js",
     "test": "tsc && jest",
     "prepare": "husky install || true",
     "lint": "eslint .",
