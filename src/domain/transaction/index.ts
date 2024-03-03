@@ -315,6 +315,7 @@ export const tokensCards = async (): Promise<WompiTokenResponse> => {
       body: JSON.stringify(postData)
     })
     const responseData = await data.json()
+    console.log(responseData)
     if (responseData.message === 'Forbidden') {
       const response = await ResponseService(
         FAILURE,
@@ -332,7 +333,7 @@ export const tokensCards = async (): Promise<WompiTokenResponse> => {
     )
     return response
   } catch (error) {
-    LogDanger('[TRANSACTION] = /api/v1/wompi/transaction/tokens/cards/')
+    LogDanger('[TRANSACTION] = /api/v1/wompi/transaction/tokens/cards')
     const response = await ResponseService(
       FAILURE,
       'CRASH_LOGIC',

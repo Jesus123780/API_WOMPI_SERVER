@@ -16,7 +16,7 @@ const supertest_1 = __importDefault(require("supertest"));
 const server_1 = __importDefault(require("../server"));
 const utils_1 = require("../utils");
 jest.setTimeout(1000000);
-describe('Post Endpoints', () => {
+describe('Post Endpoint create Ride ', () => {
     it('should create a new ride and pay transaction successfully', () => __awaiter(void 0, void 0, void 0, function* () {
         // req body:
         const rideData = {

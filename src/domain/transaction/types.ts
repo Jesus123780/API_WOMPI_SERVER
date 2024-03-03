@@ -35,8 +35,7 @@ export interface PaymentSourceDataResponse {
   }
 }
 export interface WompiTokenResponse {
-
-  response: {
+  response?: {
     data: {
       data: {
         id: string

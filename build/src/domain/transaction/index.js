@@ -12,8 +12,91 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPresignedAcceptanceToken = exports.createPaymentSource = exports.tokensCards = exports.createTransaction = exports.createTransactionLink = void 0;
 const utils_1 = require("../../utils");
 const helpers_1 = require("./helpers");
+/**
+ * @swagger
+ * tags:
+ *   - name: Transaction
+ *     description: Operaciones relacionadas con transacciones de pago
+ *
+ * /transaction:
+ *   post:
+ *     tags:
+ *       - Transaction
+ *     summary: Crea un enlace de pago.
+ *     description: Crea un enlace de pago utilizando la API de Wompi.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nombre del enlace de pago.
+ *               description:
+ *                 type: string
+ *                 description: Descripción del pago.
+ *               single_use:
+ *                 type: boolean
+ *                 description: Indica si el enlace de pago será de un solo uso.
+ *               collect_shipping:
+ *                 type: boolean
+ *                 description: Indica si se debe recolectar la información de envío.
+ *               currency:
+ *                 type: string
+ *                 description: Moneda del pago (COP para pesos colombianos).
+ *               amount_in_cents:
+ *                 type: number
+ *                 description: Monto del pago en centavos.
+ *               expires_at:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Fecha de expiración del enlace de pago (ISO 8601).
+ *               customer_data:
+ *                 type: object
+ *                 properties:
+ *                   customer_references:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         label:
+ *                           type: string
+ *                           description: Nombre del campo personalizado.
+ *                         is_required:
+ *                           type: boolean
+ *                           description: Indica si el campo es obligatorio.
+ *     responses:
+ *       '200':
+ *         description: Enlace de pago generado correctamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Estado de la operación.
+ *                 code:
+ *                   type: string
+ *                   description: Código de la operación.
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje de la operación.
+ *                 urlPayment:
+ *                   type: string
+ *                   description: URL del enlace de pago generado.
+ *       '400':
+ *         description: Error en la solicitud.
+ *       '401':
+ *         description: Error de autenticación.
+ *       '500':
+ *         description: Error interno del servidor.
+ */
 const createTransactionLink = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
+    console.log('createTransactionLink');
     try {
         const INVALID_ACCESS_TOKEN = /'INVALID_ACCESS_TOKEN'i/;
         const errorMessage = 'Error: Payment link could not be generated';
@@ -144,6 +227,7 @@ const tokensCards = () => __awaiter(void 0, void 0, void 0, function* () {
             body: JSON.stringify(postData)
         });
         const responseData = yield data.json();
+        console.log(responseData);
         if (responseData.message === 'Forbidden') {
             const response = yield (0, utils_1.ResponseService)(utils_1.FAILURE, utils_1.CODE_UNAUTHORIZED, responseData.message, '');
             return response;
@@ -152,7 +236,7 @@ const tokensCards = () => __awaiter(void 0, void 0, void 0, function* () {
         return response;
     }
     catch (error) {
-        (0, utils_1.LogDanger)('[TRANSACTION] = /api/v1/wompi/transaction/tokens/cards/');
+        (0, utils_1.LogDanger)('[TRANSACTION] = /api/v1/wompi/transaction/tokens/cards');
         const response = yield (0, utils_1.ResponseService)(utils_1.FAILURE, 'CRASH_LOGIC', 'error.message', 'error.message');
         return response;
     }

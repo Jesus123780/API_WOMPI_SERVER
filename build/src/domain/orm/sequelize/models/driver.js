@@ -13,7 +13,7 @@ const DriverRideModel = repositories_sequelize_1.default.define('driver', {
         autoIncrement: true
     },
     driverName: {
-        type: sequelize_1.INTEGER,
+        type: sequelize_1.STRING,
         allowNull: false
     },
     ccDriver: {

@@ -1,4 +1,4 @@
-import { INTEGER } from 'sequelize'
+import { INTEGER, STRING } from 'sequelize'
 import sequelizeConnection from '../../../repositories/repositories_sequelize'
 
 // Travel Model
@@ -9,7 +9,7 @@ const DriverRideModel = sequelizeConnection.define('driver', {
     autoIncrement: true
   },
   driverName: {
-    type: INTEGER,
+    type: STRING,
     allowNull: false
   },
   ccDriver: {

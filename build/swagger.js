@@ -15,11 +15,13 @@ const options = {
     },
     swaggerDefinition: {
         info: {
-            title: 'API',
+            title: 'API TRANSACTION WOMPI',
             version: '1.0.0'
         }
     },
-    apis: [path_1.default.join(__dirname, './src/routes/*'), path_1.default.join(__dirname, './src/controller/*.ts'), path_1.default.join(__dirname, './src/models/*.ts')]
+    apis: [
+        path_1.default.join(__dirname, './src/domain/**/*.ts')
+    ]
 };
 const swaggerSpec = (0, swagger_jsdoc_1.default)(options);
 exports.default = swaggerSpec;

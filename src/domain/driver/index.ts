@@ -9,7 +9,61 @@ import {
 } from '../../utils'
 import DriverRideModel from '../orm/sequelize/models/driver'
 import { fn } from 'sequelize'
-
+/**
+ * @swagger
+ * tags:
+ *   - name: Driver
+ *     description: Operations related to driver creation
+ *
+ * /api/v1/driver/driver:
+ *   post:
+ *     summary: Create a new driver.
+ *     description: Creates a new driver and stores it in the database.
+ *     tags:
+ *       - Driver
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               ccDriver:
+ *                 type: string
+ *                 description: The driver's identification number.
+ *               driverName:
+ *                 type: string
+ *                 description: The name of the driver.
+ *     responses:
+ *       '200':
+ *         description: Driver created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 idDriverRide:
+ *                   type: integer
+ *                   description: The ID of the newly created driver.
+ *                 driverName:
+ *                   type: string
+ *                   description: The name of the driver.
+ *                 ccDriver:
+ *                   type: string
+ *                   description: The driver's identification number.
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: The timestamp indicating when the driver was created.
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   description: The timestamp indicating when the driver was last updated.
+ *       '400':
+ *         description: Bad request. Missing required fields in the request body.
+ *       '500':
+ *         description: Internal server error. Failed to create the driver.
+ */
 export const createDriver = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { ccDriver, driverName } = req.body
