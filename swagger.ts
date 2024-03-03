@@ -12,11 +12,13 @@ const options: swaggerJSDoc.Options = {
   },
   swaggerDefinition: {
     info: {
-      title: 'API',
+      title: 'API TRANSACTION WOMPI',
       version: '1.0.0'
     }
   },
-  apis: [path.join(__dirname, './src/routes/*'), path.join(__dirname, './src/controller/*.ts'), path.join(__dirname, './src/models/*.ts')]
+  apis: [
+    path.join(__dirname, './src/domain/**/*.ts')
+  ]
 }
 
 const swaggerSpec = swaggerJSDoc(options)

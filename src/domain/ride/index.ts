@@ -31,7 +31,83 @@ import { type RequestBody } from './types'
 import { validateEmail } from '../../utils/validateEmail'
 import { findOneUserRide } from '../userRider'
 import { getOrCreateTokenizedCardId } from './helpers/tokenCard'
-
+/**
+ * @swagger
+ * tags:
+ *   - name: Ride
+ *     description: Operaciones relacionadas con solicitudes de viaje
+ *
+ * /api/v1/ride/createRide:
+ *   post:
+ *     summary: Crea una nueva solicitud de viaje.
+ *     description: Crea una nueva solicitud de viaje e inicia el proceso de pago.
+ *     tags:
+ *       - Ride
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               latitude:
+ *                 type: number
+ *                 description: Latitud de inicio del viaje.
+ *               longitude:
+ *                 type: number
+ *                 description: Longitud de inicio del viaje.
+ *               endLatitude:
+ *                 type: number
+ *                 description: Latitud de destino del viaje.
+ *               endLongitude:
+ *                 type: number
+ *                 description: Longitud de destino del viaje.
+ *               idUserRider:
+ *                 type: string
+ *                 description: ID del usuario que solicita el viaje.
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Correo electrónico del usuario que solicita el viaje.
+ *               type:
+ *                 type: string
+ *                 description: Tipo de método de pago.
+ *               currency:
+ *                 type: string
+ *                 description: Moneda para el pago.
+ *             required:
+ *               - latitude
+ *               - longitude
+ *               - endLatitude
+ *               - endLongitude
+ *               - idUserRider
+ *               - email
+ *               - type
+ *               - currency
+ *     responses:
+ *       '200':
+ *         description: Solicitud de viaje exitosa. Detalles de la transacción devueltos.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Estado de la transacción.
+ *                 code:
+ *                   type: string
+ *                   description: Código de la transacción.
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje de la transacción.
+ *       '400':
+ *         description: Solicitud incorrecta. Datos de entrada inválidos.
+ *       '401':
+ *         description: No autorizado. Las credenciales de autenticación están ausentes o son inválidas.
+ *       '500':
+ *         description: Error interno del servidor. No se pudo procesar la solicitud de viaje.
+ */
 export const createRide = async (
   req: Request,
   res: Response

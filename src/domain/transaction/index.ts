@@ -17,11 +17,93 @@ import type {
   WompiMerchantResponse,
   WompiTokenResponse
 } from './types'
-
+/**
+ * @swagger
+ * tags:
+ *   - name: Transaction
+ *     description: Operaciones relacionadas con transacciones de pago
+ *
+ * /transaction:
+ *   post:
+ *     tags:
+ *       - Transaction
+ *     summary: Crea un enlace de pago.
+ *     description: Crea un enlace de pago utilizando la API de Wompi.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nombre del enlace de pago.
+ *               description:
+ *                 type: string
+ *                 description: Descripción del pago.
+ *               single_use:
+ *                 type: boolean
+ *                 description: Indica si el enlace de pago será de un solo uso.
+ *               collect_shipping:
+ *                 type: boolean
+ *                 description: Indica si se debe recolectar la información de envío.
+ *               currency:
+ *                 type: string
+ *                 description: Moneda del pago (COP para pesos colombianos).
+ *               amount_in_cents:
+ *                 type: number
+ *                 description: Monto del pago en centavos.
+ *               expires_at:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Fecha de expiración del enlace de pago (ISO 8601).
+ *               customer_data:
+ *                 type: object
+ *                 properties:
+ *                   customer_references:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         label:
+ *                           type: string
+ *                           description: Nombre del campo personalizado.
+ *                         is_required:
+ *                           type: boolean
+ *                           description: Indica si el campo es obligatorio.
+ *     responses:
+ *       '200':
+ *         description: Enlace de pago generado correctamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Estado de la operación.
+ *                 code:
+ *                   type: string
+ *                   description: Código de la operación.
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje de la operación.
+ *                 urlPayment:
+ *                   type: string
+ *                   description: URL del enlace de pago generado.
+ *       '400':
+ *         description: Error en la solicitud.
+ *       '401':
+ *         description: Error de autenticación.
+ *       '500':
+ *         description: Error interno del servidor.
+ */
 export const createTransactionLink = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
+  console.log('createTransactionLink')
   try {
     const INVALID_ACCESS_TOKEN = /'INVALID_ACCESS_TOKEN'i/
     const errorMessage = 'Error: Payment link could not be generated'
@@ -148,6 +230,7 @@ interface TransactionResponse {
   code: string
   message: string
 }
+
 export const createTransaction = async (
   transactionData: TransactionData
 ): Promise<TransactionResponse> => {
