@@ -4,7 +4,7 @@
     "target": "es6", // Matches your current setting
     "module": "commonjs", // Matches your current setting
     "strict": true, // Matches your current setting
-    "outDir": "./dist", // Matches your current outDir
+    "outDir": "./build",
     "sourceMap": true, // Matches your current setting
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -14,7 +14,8 @@
     "src",
     "commitlint.config.js",
     "jest.config.ts",
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "src/**/*.ts"
   ],
   "exclude": ["node_modules", "**/__tests__/*"]
 }
