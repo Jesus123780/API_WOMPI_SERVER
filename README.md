@@ -2,6 +2,9 @@
 
 Este es un proyecto de API para manejar transacciones de pagos y viajes, utilizando tecnologías como Express, TypeScript, Sequelize y Wompi.
 
+*Este proyecto utiliza el patrón de diseño hexagonal para organizar su arquitectura y separar las preocupaciones de negocio de las tecnologías externas. El patrón de diseño hexagonal promueve la modularidad y la mantenibilidad del código al centrarse en el dominio del problema y desacoplarlo de las implementaciones externas, como las bases de datos o las interfaces de usuario.
+*
+
 - 1 - Crear un método de pago para un usuario utilizando una tarjeta pre-tokenizada
 - 2 - Solicitar un viaje con asignación inmediata de conductor e inicio del viaje
 - 3 - Finalizar un viaje, calcular el monto total basado en la distancia, el tiempo y la tarifa base, y crear una transacción en Wompi
@@ -61,6 +64,26 @@ npm run dev
 https://localhost:3000/docs
 ```
 
+## Endpoints
+
+Create a Ride
+
+- URL: [/api/v1/ride/createRide](https://api-transactions-vqu3.onrender.com/api/v1/ride/createRide)
+- Method: POST
+- Request Body
+```bash
+{
+  "latitude": 4.793315895432347,
+  "longitude": -75.73768527482514,
+  "idUserRider": 1,
+  "email": "juvinaojesusd@gmail.com",
+  "endLatitude": 4.831870662263195,
+  "endLongitude": -75.68060921521975,
+  "type": "CARD",
+  "currency": "COP"
+}
+```
+- Response: Returns details of the created transaction.
 
 ## Pruebas
 Ejecuta las pruebas:
@@ -70,6 +93,13 @@ npm run test
 ```
 
 [Endpoint de Swagger](https://api-transactions-vqu3.onrender.com/docs/)
+
+
+## Scripts
+- *dev*: inicia el servidor en modo de desarrollo con recarga en caliente.
+- *prueba*: ejecute pruebas automatizadas usando Jest.
+- *lint*: Lint el código base usando ESLint.
+- *build*: compila el código TypeScript en JavaScript y babelify para la implementación en producción.
 
 ## Contribuyendo
 - Haz un fork del repositorio en GitHub
@@ -81,6 +111,9 @@ npm run test
 
 ## Autores
 [Autor Jesus Juvinao](https://wa.link/eyrc66)
+
+## Soporte
+Haz cualquier pregunta o plantea cualquier problema en el repositorio de GitHub del proyecto.
 
 ## Licencia
 
