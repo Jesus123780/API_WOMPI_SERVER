@@ -3,3 +3,4 @@
 
 # Run test
 npm run check:te
+npm run test
