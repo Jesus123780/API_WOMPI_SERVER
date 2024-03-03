@@ -2,11 +2,11 @@ import * as enum_ from './enum'
 
 export async function ResponseService (
   status: any,
-  errorCode: any,
+  code: any,
   message: any,
   data: any
 ): Promise<any> {
-  return { status, response: { errorCode, message, data } }
+  return { status, response: { code, message, data } }
 }
 
 export function LogSuccess (msg: any): void {

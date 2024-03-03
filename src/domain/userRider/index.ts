@@ -1,4 +1,4 @@
-import { type Request, type Response } from 'express'
+import type { Request, Response } from 'express'
 import { LogDanger, ResponseService } from '../../utils/magic'
 import * as enum_ from '../../utils/enum'
 import UserRiderModel from '../orm/sequelize/models/users'
@@ -45,5 +45,19 @@ export const createUserRider = async (req: Request, res: Response): Promise<Resp
   } catch (error) {
     const response = await ResponseService('Failure', enum_.CODE_INTERNAL_SERVER_ERROR, 'Internal server error', '')
     return res.status(enum_.CODE_INTERNAL_SERVER_ERROR).json(response)
+  }
+}
+
+export const findOneUserRide = async (args: any): Promise<Response> => {
+  try {
+    const { id } = args ?? {
+      id: null
+    }
+    const respOrm = await UserRiderModel.findOne({ where: { idUserRider: id } })
+    const response = await ResponseService('Success', '', '', respOrm)
+    return response
+  } catch (err) {
+    const response = await ResponseService('Failure', enum_.CRASH_LOGIC, err, '')
+    return response
   }
 }

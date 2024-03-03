@@ -1,18 +1,19 @@
 import type {
-  NextFunction,
   Request,
   Response
 } from 'express'
 import {
   CODE_BAD_REQUEST,
   CODE_INTERNAL_SERVER_ERROR,
+  FAILURE,
   CODE_OK,
   LogDanger,
   LogInfo,
   LogSuccess,
   LogWarning,
   ResponseService,
-  calculateLogLatHaversine
+  calculateLogLatHaversine,
+  SUCCESS
 } from '../../utils'
 import { findRandomDriver } from '../driver'
 import Ride from '../orm/sequelize/models/Ride'
@@ -24,28 +25,19 @@ import {
 import {
   createPaymentSource,
   createTransaction,
-  getPresignedAcceptanceToken,
-  tokensCards
+  getPresignedAcceptanceToken
 } from '../transaction'
-import type { typeCard } from '../transaction/types'
-
-interface RequestBody {
-  latitude: number
-  longitude: number
-  endLongitude: number
-  endLatitude: number
-  idUserRider: number
-  type: typeCard
-}
+import { type RequestBody } from './types'
+import { validateEmail } from '../../utils/validateEmail'
+import { findOneUserRide } from '../userRider'
+import { getOrCreateTokenizedCardId } from './helpers/tokenCard'
 
 export const createRide = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): Promise<Response> => {
   try {
     LogInfo('[POST] /api/v1/rides/createRide')
-
     // Obtener los datos del cuerpo de la solicitud
     const {
       latitude,
@@ -53,24 +45,54 @@ export const createRide = async (
       endLongitude,
       endLatitude,
       idUserRider,
-      type = 'CARD'
-    }: RequestBody =
-      req.body
-
-    // Validar si se proporcionaron todos los datos requeridos
+      email,
+      type = 'CARD',
+      currency = 'COP'
+    }: RequestBody = req.body
+    if (idUserRider === null || idUserRider === undefined) {
+      LogWarning('Missing required fields in request body')
+      const response = await ResponseService(
+        FAILURE,
+        CODE_BAD_REQUEST,
+        'user not received',
+        ''
+      )
+      return res.status(CODE_BAD_REQUEST).send(response)
+    }
     if (
       latitude === undefined ||
       longitude === undefined ||
-      idUserRider === undefined ||
       latitude === null ||
-      longitude === null ||
-      idUserRider === null
+      longitude === null
     ) {
       LogWarning('Missing required fields in request body')
       const response = await ResponseService(
-        'Failure',
+        FAILURE,
         CODE_BAD_REQUEST,
         'Missing required fields',
+        ''
+      )
+      return res.status(CODE_BAD_REQUEST).send(response)
+    }
+    const isValidEmail = validateEmail(email, { strict: true })
+
+    if (!isValidEmail) {
+      LogWarning('Missing required email in request body')
+      const response = await ResponseService(
+        FAILURE,
+        CODE_BAD_REQUEST,
+        'Missing required email',
+        ''
+      )
+      return res.status(CODE_BAD_REQUEST).send(response)
+    }
+    const findUser = await findOneUserRide({ id: idUserRider })
+    if (findUser === null) {
+      LogWarning('User not found')
+      const response = await ResponseService(
+        FAILURE,
+        CODE_BAD_REQUEST,
+        'An error has occurred',
         ''
       )
       return res.status(CODE_BAD_REQUEST).send(response)
@@ -79,16 +101,16 @@ export const createRide = async (
     // Aquí iría la lógica para manejar la solicitud de viaje
     // Por ahora, solo se muestra la información recibida
     LogSuccess('Request ride data:')
-    console.log('Latitude:', latitude)
-    console.log('Longitude:', longitude)
-    console.log('User ID Rider:', idUserRider)
+    LogInfo(`Latitude: ${latitude}`)
+    LogInfo(`Longitude: ${longitude} `)
+    LogInfo(`User ID Rider: ${idUserRider}`)
 
     const randomDriver = await findRandomDriver()
     const idDriverRide = randomDriver
     console.log('Random Driver Ride ID:', idDriverRide)
-    const newRide = await Ride.create({
-      idUserRider: 1,
-      idDriverRide: 1,
+    await Ride.create({
+      idUserRider,
+      idDriverRide,
       startLatitude: latitude,
       startLongitude: longitude,
       endLatitude,
@@ -96,13 +118,14 @@ export const createRide = async (
     })
     const publicKey = `${process.env.PUBLIC_KEY_WOMPI}`
     LogInfo('Create acceptance token for payment source')
-    const acceptanceToken = await getPresignedAcceptanceToken(publicKey)
-    const tokenizedCard = await tokensCards()
-    const idTokenCard = tokenizedCard?.response?.data.data.id ?? ''
-    if (tokenizedCard.response?.data?.data.id === '') {
+    const [acceptanceToken, idTokenCard] = await Promise.all([
+      getPresignedAcceptanceToken(publicKey),
+      getOrCreateTokenizedCardId()
+    ])
+    if (idTokenCard === '') {
       LogDanger('Error tokenizing card')
       const response = await ResponseService(
-        'Failure',
+        FAILURE,
         CODE_INTERNAL_SERVER_ERROR,
         'Error: tokenizing card',
         ''
@@ -112,53 +135,59 @@ export const createRide = async (
     const paymentSourceData = {
       type,
       token: idTokenCard,
-      customer_email: 'pepito_perez@example.com',
+      customer_email: `${email}`,
       acceptance_token: acceptanceToken
     }
     const privateAccessKey = `${process.env.PRIVATE_KEY_WOMPI}`
     const paymentSource = await createPaymentSource(privateAccessKey, paymentSourceData)
-    console.log(paymentSource.data)
-    const { id, customer_email: customerEmail } = paymentSource.data ?? {
-      public_data: {
-      },
-      id: ''
-    }
-    const distanceKm = calculateLogLatHaversine(
-      latitude,
-      longitude,
-      endLatitude,
-      endLongitude
-    )
-    LogSuccess(`KM: ${distanceKm}`)
+    if (paymentSource.error === undefined) {
+      const { id, customer_email: customerEmail } = paymentSource?.data ?? {
+        public_data: {
+        },
+        id: ''
+      }
+      const distanceKm = calculateLogLatHaversine(
+        latitude,
+        longitude,
+        endLatitude,
+        endLongitude
+      )
+      LogSuccess(`KM: ${distanceKm}`)
 
-    const { totalPrice } = calculateTotalPrice(distanceKm)
-    LogSuccess(`Total trip fare: $ ${totalPrice}`)
-    const codeReference = generateRandomCode(10, 'uuid')
-    const integrityFirm = await createIntegrityFirm(codeReference, totalPrice)
-    const transactionData = {
-      amount_in_cents: totalPrice,
-      currency: 'COP',
-      signature: integrityFirm,
-      customer_email: customerEmail,
-      payment_method: {
-        installments: 1
-      },
-      reference: codeReference, // Referencia única de pago
-      payment_source_id: id
+      const { totalPrice } = calculateTotalPrice(distanceKm)
+      LogSuccess(`Total trip fare: $ ${totalPrice}`)
+      const codeReference = generateRandomCode(10, 'uuid')
+      const integrityFirm = await createIntegrityFirm(codeReference, totalPrice)
+      const transactionData = {
+        amount_in_cents: totalPrice,
+        currency,
+        signature: integrityFirm,
+        customer_email: customerEmail,
+        recurrent: true,
+        payment_method: {
+          installments: 1
+        },
+        reference: codeReference,
+        payment_source_id: id
+      }
+      const transaction = await createTransaction(transactionData)
+      if (transaction.status !== SUCCESS) {
+        LogDanger('Error creating payment source')
+        const response = await ResponseService(
+          FAILURE,
+          CODE_INTERNAL_SERVER_ERROR,
+          'Error: creating payment source',
+          ''
+        )
+        return res.status(CODE_INTERNAL_SERVER_ERROR).send(response)
+      }
+      return res.status(CODE_OK).send(transaction)
     }
-    // const payRide = await createTransaction(transactionData)
-    await createTransaction(transactionData)
-    const response = await ResponseService(
-      'Success',
-      CODE_OK,
-      'Ride requested successfully',
-      newRide
-    )
-    return res.status(CODE_OK).send(response)
+    return res.status(CODE_INTERNAL_SERVER_ERROR).send({})
   } catch (error) {
     LogDanger('Error handling ride request:')
     const response = await ResponseService(
-      'Failure',
+      FAILURE,
       CODE_INTERNAL_SERVER_ERROR,
       'Internal server error',
       error

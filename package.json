@@ -62,7 +62,7 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "clear:install": "rm -rf node_modules && npm install",
     "start": "nodemon --exec ts-node build/index.ts",
-    "test": "jest",
+    "test": "tsc && jest",
     "prepare": "husky install || true",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
@@ -72,9 +72,6 @@
     "dev:swagger": "npm run swagger",
     "build:swagger": "npm run swagger",
     "swagger": "tsoa spec"
-  },
-  "jest": {
-    "testEnvironment": "node"
   },
   "version": "1.0.3"
 }

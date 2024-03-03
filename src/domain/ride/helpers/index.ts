@@ -6,23 +6,40 @@ const calculateMinutesForKm = (distanceKm: number): number => {
   return minutes
 }
 
-export const calculateTotalPrice = (distanceKm: number): {
+export function calculateTotalPrice (distanceKm: number): {
   totalPrice: number
   formattedPrice: string
-} => {
-  const pricePerKm = 1000
-  const pricePerMinute = 200
+} {
+  if (distanceKm <= 0) {
+    return {
+      totalPrice: 0,
+      formattedPrice: ''
+    }
+  }
+
+  const PRECIO_POR_KM = 1000
+  const PRECIO_POR_MINUTO = 200
+  const TARIFA_BASE = 3500
+
   const durationMinutes = calculateMinutesForKm(distanceKm)
-  const price = distanceKm * pricePerKm + durationMinutes * pricePerMinute
 
-  const roundedPrice = Math.round(price)
-  const totalPrice = price?.toFixed(2).replace('.', '')
+  const precioEnCentavos =
+    PRECIO_POR_KM * distanceKm * 100 +
+    PRECIO_POR_MINUTO * durationMinutes * 100 +
+    TARIFA_BASE * 100
 
-  const formattedPrice = roundedPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })
+  const precio = precioEnCentavos / 100
+
+  const roundPrice = Math.round(precio * 100) / 100
+  const formatPrice = roundPrice.toLocaleString('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 2
+  })
 
   return {
-    totalPrice: Number(totalPrice),
-    formattedPrice
+    totalPrice: parseInt(roundPrice.toString().replace('.', '')),
+    formattedPrice: formatPrice
   }
 }
 
@@ -55,14 +72,37 @@ export function removeCharacters (
   }
 }
 
+/**
+ * Creates integrity for a firm based on reference and amount.
+ * @version 1.0.0
+ * @param {string} reference - The reference for the firm.
+ * @param {number} amount - The amount for the firm.
+ * @returns {Promise<string>} The generated hash hexadecimal string.
+ */
 export const createIntegrityFirm = async (reference: string, amount: number): Promise<string> => {
-  const secretKey = process.env.INTEGRITY_FIRM
-  const integrityFirm = `${reference}${amount}COP${secretKey}`
-  const enCodeText = new TextEncoder().encode(integrityFirm)
-  const hashBuffer = await crypto.subtle.digest('SHA-256', enCodeText)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
-  return hashHex
+  try {
+    if (typeof reference !== 'string') {
+      throw new Error('Reference must be a non-empty string.')
+    }
+    if (isNaN(amount) || amount <= 0) {
+      throw new Error('Amount must be a positive number.')
+    }
+    const secretKey = process.env.INTEGRITY_FIRM
+    if (typeof secretKey !== 'string') {
+      throw new Error('Secret key is not available.')
+    }
+    const integrityFirm = `${reference}${amount}COP${secretKey}`
+    const enCodeText = new TextEncoder().encode(integrityFirm)
+    const hashBuffer = await crypto.subtle.digest('SHA-256', enCodeText)
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+    return hashHex
+  } catch (error) {
+    if (error instanceof Error) {
+      return `${error.message}`
+    }
+    return ''
+  }
 }
 
 export const generateRandomCode = (longitud: number, tipo?: string): string => {
@@ -83,7 +123,7 @@ export const generateRandomCode = (longitud: number, tipo?: string): string => {
   // Formatear referencia según el tipo
   if (tipo === 'uuid') {
     referencia = referencia.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, '$1-$2-$3-$4-$5')
-  } else if (tipo === 'codigoPostal') {
+  } else if (tipo === 'postalCode') {
     referencia = referencia.replace(/(.{3})(.{3})/, '$1-$2')
   }
 
