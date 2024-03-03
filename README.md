@@ -1,45 +1,46 @@
 # API Transactions
 
-Este es un proyecto de API para manejar transacciones de pagos y viajes, utilizando tecnologías como Express, TypeScript, Sequelize y Wompi.
+This is an API project to handle payment transactions and rides, using technologies like Express, TypeScript, Sequelize, and Wompi.
 
-*Este proyecto utiliza el patrón de diseño hexagonal para organizar su arquitectura y separar las preocupaciones de negocio de las tecnologías externas. El patrón de diseño hexagonal promueve la modularidad y la mantenibilidad del código al centrarse en el dominio del problema y desacoplarlo de las implementaciones externas, como las bases de datos o las interfaces de usuario.
+*This project utilizes the hexagonal design pattern to organize its architecture and separate business concerns from external technologies. The hexagonal design pattern promotes code modularity and maintainability by focusing on the problem domain and decoupling it from external implementations, such as databases or user interfaces.
 *
 
-- 1 - Crear un método de pago para un usuario utilizando una tarjeta pre-tokenizada
-- 2 - Solicitar un viaje con asignación inmediata de conductor e inicio del viaje
-- 3 - Finalizar un viaje, calcular el monto total basado en la distancia, el tiempo y la tarifa base, y crear una transacción en Wompi
+- 1 - Create a payment method for a user using a pre-tokenized card
+- 2 - Request a ride with immediate driver assignment and ride initiation
+- 3 - Finish a ride, calculate the total amount based on distance, time, and base fare, and create a transaction in Wompi
 
-## Características:
+## Features:
 
-- Manejo seguro y eficiente de métodos de pago y transacciones de Wompi
-- Proceso fluido de solicitud y inicio de viaje, optimizando la experiencia del usuario
-- Cálculo preciso de la tarifa considerando la distancia, el tiempo y la tarifa base
+- Secure and efficient handling of Wompi payment methods and transactions
+- Smooth ride request and initiation process, optimizing user experience
+- Precise fare calculation considering distance, time, and base fare
 
-## Instalación
+## Installation: 
 
-Clona el repositorio:
+Clone the repository:
 ```bash
 git clone https://github.com/Jesus123780/api_transactions
-cd api_transactions
-npm install
 ```
 
-## Instala las dependencias
+## Install dependencies
 ```bash
 cd api_transactions
 npm install
 ```
 
-## Configuración
+## Configuration
 
-**Prerrequisitos**:
 
-- Una cuenta de comerciante de Wompi
-- Conocimientos básicos de Node.js y la API de Wompi
+**Prerequisites**:
 
-## Variables de entorno
+- A Wompi merchant account
+- Basic knowledge of Node.js and Wompi API
 
-Crea un archivo .env en la raíz del proyecto y proporciona los siguientes valores:
+## Environment Variables
+
+
+Create a *.env* file in the root of the project and provide the following values:
+
 
 ```bash
 NAME_DB=nombre_de_la_base_de_datos
@@ -51,14 +52,16 @@ PASS_DB=contraseña_de_la_base_de_datos
 PUBLIC_KEY_WOMPI=tu_clave_pública_de_Wompi
 PRIVATE_KEY_WOMPI=tu_clave_privada_de_Wompi
 ```
-## Uso
-Inicia el servidor en desarrollo:
+## Usage
+Start the server in development:
+
+
 
 ```bash
 npm run dev
 ```
 
-## Accede a la documentación de la API en
+## Access the API documentation at
 
 ```bash
 https://localhost:3000/docs
@@ -85,36 +88,37 @@ Create a Ride
 ```
 - Response: Returns details of the created transaction.
 
-## Pruebas
-Ejecuta las pruebas:
+## Tests
+Run the tests:
 
 ```bash
 npm run test
 ```
 
-[Endpoint de Swagger](https://api-transactions-vqu3.onrender.com/docs/)
+[Swagger Endpoint](https://api-transactions-vqu3.onrender.com/docs/)
 
 
 ## Scripts
-- *dev*: inicia el servidor en modo de desarrollo con recarga en caliente.
-- *prueba*: ejecute pruebas automatizadas usando Jest.
-- *lint*: Lint el código base usando ESLint.
-- *build*: compila el código TypeScript en JavaScript y babelify para la implementación en producción.
+- *dev*: start the server in development mode with hot reloading.
+- *test*: run automated tests using Jest.
+- *lint*: lint the codebase using ESLint.
+- *build*: compile TypeScript code into JavaScript and babelify for production deployment.
 
-## Contribuyendo
-- Haz un fork del repositorio en GitHub
-- Clona tu fork: git clone https://github.com/Jesus123780/api_transactions
-- Crea una nueva rama: git checkout -b feature/nueva-funcionalidad
-- Realiza tus cambios y haz commit: git commit -am 'Agrega nueva funcionalidad'
-- Sube tus cambios: git push origin feature/nueva-funcionalidad
-- Crea un nuevo pull request en GitHub.
+## Contributing
+- Fork the repository on GitHub
+- Clone your fork: git clone https://github.com/Jesus123780/api_transactions
+- Create a new branch: git checkout -b feature/new-feature
+- Make your changes and commit: git commit -am 'Add new feature'
+- Push your changes: git push origin feature/new-feature
+- Create a new pull request on GitHub.
 
-## Autores
+## Authors
 [Autor Jesus Juvinao](https://wa.link/eyrc66)
 
-## Soporte
-Haz cualquier pregunta o plantea cualquier problema en el repositorio de GitHub del proyecto.
+## Support
+Ask any questions or raise any issues on the project's GitHub repository.
 
-## Licencia
 
-Este proyecto está licenciado bajo la Licencia ISC (https://opensource.org/license/isc-license-txt). Consulta el archivo LICENSE para obtener más detalles.
+## License
+
+This project is licensed under the ISC License (https://opensource.org/license/isc-license-txt). See the LICENSE file for more details.
