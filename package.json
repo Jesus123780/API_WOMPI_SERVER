@@ -75,5 +75,5 @@
     "build:swagger": "npm run swagger",
     "swagger": "tsoa spec"
   },
-  "version": "1.0.4"
+  "version": "1.0.5"
 }
