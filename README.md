@@ -28,10 +28,13 @@ npm install
 ```
 
 ## Configuración
-- **Prerrequisitos**:
+
+**Prerrequisitos**:
 
 - Una cuenta de comerciante de Wompi
 - Conocimientos básicos de Node.js y la API de Wompi
+
+## Variables de entorno
 
 Crea un archivo .env en la raíz del proyecto y proporciona los siguientes valores:
 
@@ -51,3 +54,34 @@ Inicia el servidor en desarrollo:
 ```bash
 npm run dev
 ```
+
+## Accede a la documentación de la API en
+
+```bash
+https://localhost:3000/docs
+```
+
+
+## Pruebas
+Ejecuta las pruebas:
+
+```bash
+npm run test
+```
+
+[Endpoint de Swagger](https://api-transactions-vqu3.onrender.com/docs/)
+
+## Contribuyendo
+- Haz un fork del repositorio en GitHub
+- Clona tu fork: git clone https://github.com/Jesus123780/api_transactions
+- Crea una nueva rama: git checkout -b feature/nueva-funcionalidad
+- Realiza tus cambios y haz commit: git commit -am 'Agrega nueva funcionalidad'
+- Sube tus cambios: git push origin feature/nueva-funcionalidad
+- Crea un nuevo pull request en GitHub.
+
+## Autores
+[Autor Jesus Juvinao](https://wa.link/eyrc66)
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia ISC (https://opensource.org/license/isc-license-txt). Consulta el archivo LICENSE para obtener más detalles.
