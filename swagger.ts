@@ -17,7 +17,8 @@ const options: swaggerJSDoc.Options = {
     }
   },
   apis: [
-    path.join(__dirname, './src/domain/**/*.ts')
+    path.join(__dirname, './src/domain/**/*.ts'),
+    path.join(__dirname, './src/domain/**/*.js')
   ]
 }
 

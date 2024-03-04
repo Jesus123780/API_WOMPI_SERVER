@@ -18,7 +18,7 @@ const utils_1 = require("../utils");
 jest.setTimeout(1000000);
 describe('Post Endpoint create Ride ', () => {
     it('should create a new ride and pay transaction successfully', () => __awaiter(void 0, void 0, void 0, function* () {
-        // req body:
+        // Arrange
         const rideData = {
             latitude: 4.793315895432347,
             longitude: -75.73768527482514,
@@ -29,11 +29,13 @@ describe('Post Endpoint create Ride ', () => {
             type: 'CARD',
             currency: 'COP'
         };
+        // Act
         const response = yield (0, supertest_1.default)(server_1.default)
             .post('/api/v1/ride/createRide')
             .send(rideData)
             .expect('Content-Type', /json/)
             .expect(200);
+        // Assert
         expect(response.body.status).toBe('success');
         expect(response.body.response.data.data.customer_email).toBe(rideData.email);
         expect(response.body.response.data.data.payment_method_type).toBe(rideData.type);
@@ -42,6 +44,7 @@ describe('Post Endpoint create Ride ', () => {
         expect(response.body.response.data.data.amount_in_cents).toEqual(1419646);
     }));
     it('should return a 400 bad request missing email ', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Arrange
         const rideData = {
             latitude: 4.793315895432347,
             longitude: -75.73768527482514,
@@ -52,18 +55,19 @@ describe('Post Endpoint create Ride ', () => {
             type: 'CARD',
             currency: 'COP'
         };
+        // Act
         const response = yield (0, supertest_1.default)(server_1.default)
             .post('/api/v1/ride/createRide')
             .send(rideData)
             .expect('Content-Type', /json/)
             .expect(400);
+        // Assert
         expect(response.body.status).toBe('Failure');
         expect(response.body.response.code).toEqual(utils_1.CODE_BAD_REQUEST);
         expect(response.body.response.message).toBe('Missing required email');
-        console.log(response.body);
-        // expect(response.body.response.data.message).toBe('Missing required email')
     }));
     it('should return a 400 bad request when user is not found', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Arrange
         const rideData = {
             latitude: 4.793315895432347,
             longitude: -75.73768527482514,
@@ -74,19 +78,23 @@ describe('Post Endpoint create Ride ', () => {
             type: 'CARD',
             currency: 'COP'
         };
+        // Act
         const response = yield (0, supertest_1.default)(server_1.default)
             .post('/api/v1/ride/createRide')
             .send(rideData)
             .expect('Content-Type', /json/);
+        // Assert
         expect(response.body.status).toBe('Failure');
         expect(response.body.response.code).toEqual(utils_1.CODE_BAD_REQUEST);
         expect(response.body.response.message).toBe('user not received');
     }));
     it('should respond with Swagger documentation', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Act
         const response = yield (0, supertest_1.default)(server_1.default).get('/docs');
         expect(response.type).toEqual('text/html');
     }));
     it('should return a 400 bad request when latitude or longitude is missing', () => __awaiter(void 0, void 0, void 0, function* () {
+        // Arrange
         const rideData = {
             idUserRider: 1,
             email: 'juvinaojesusd@gmail.com',
@@ -95,11 +103,13 @@ describe('Post Endpoint create Ride ', () => {
             type: 'CARD',
             currency: 'COP'
         };
+        // Act
         const response = yield (0, supertest_1.default)(server_1.default)
             .post('/api/v1/ride/createRide')
             .send(rideData)
             .expect('Content-Type', /json/)
             .expect(400);
+        // Assert
         expect(response.body.status).toBe('Failure');
         expect(response.body.response.code).toEqual(utils_1.CODE_BAD_REQUEST);
         expect(response.body.response.message).toBe('Missing required fields');
