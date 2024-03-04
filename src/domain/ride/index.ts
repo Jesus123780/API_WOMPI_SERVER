@@ -39,7 +39,7 @@ import { getOrCreateTokenizedCardId } from './helpers/tokenCard'
  *
  * /api/v1/ride/createRide:
  *   post:
- *     summary: Crea una nueva solicitud de viaje.
+ *     summary: Crea una nueva solicitud de viaje - inicia el proceso de pago.
  *     description: Crea una nueva solicitud de viaje e inicia el proceso de pago.
  *     tags:
  *       - Ride
